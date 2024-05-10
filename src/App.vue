@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import TheTable from "./components/TheTable.vue";
+import TheTable from "@/components/TheTable.vue";
 </script>
 
 <template>
-  <div class="wrapper">
-    <TheTable msg="You did it!" />
-  </div>
+  <main>
+    <div class="wrapper">
+      <TheTable />
+    </div>
+  </main>
 </template>
+
+<style>
+main {
+  width: 100%;
+}
+.wrapper {
+  width: 100%;
+}
+</style>
