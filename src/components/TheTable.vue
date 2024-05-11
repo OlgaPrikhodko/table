@@ -1,48 +1,27 @@
 <script setup lang="ts">
-import TheTableGroup from "@/components/TheTableGroup.vue";
-import TableRefreshButton from "@/components/TableRefreshButton.vue";
-import { useEmployees } from "@/stores/employees";
+import { useEmployeesStore } from "@/stores/employees";
 
-const employeesStore = useEmployees();
+import TableRow from "@/components/TableRow.vue";
+import TableHeader from "@/components/TableHeader.vue";
+
+const employeesStore = useEmployeesStore();
 employeesStore.setEmployees();
-
-const toggleGroup = (id: string) => {
-  console.log("toggle", id);
-  // groupedData.value[index].expanded = !groupedData.value[index].expanded;
-};
-
-const onCheckAll = () => {
-  console.log("set all rows checked");
-};
 </script>
 
 <template>
   <div class="table-container">
     <table class="table">
-      <thead class="table__head">
-        <tr>
-          <th>
-            <input
-              class="table__checkbox"
-              type="checkbox"
-              id="headerCheckbox"
-              @click="onCheckAll"
-            />
-          </th>
-          <th
-            v-for="{ name, title } in employeesStore.headerTitles"
-            :key="name"
-          >
-            {{ title }}
-          </th>
-          <th><TableRefreshButton /></th>
-        </tr>
-      </thead>
+      <TableHeader />
+
       <tbody>
-        <template v-for="[employeeId, employee] in employeesStore.employees">
-          <TheTableGroup :rowItem="employee" :key="employeeId" type="parent" />
+        <template v-for="employee of employeesStore.employees">
+          <TableRow
+            :rowItem="employee"
+            :key="employee.employeeId"
+            type="parent"
+          />
           <template v-if="employee.children.length > 0 && employee.expanded">
-            <TheTableGroup
+            <TableRow
               v-for="child in employee.children"
               :rowItem="child"
               :key="child.healthCheckId"
@@ -72,28 +51,11 @@ const onCheckAll = () => {
   color: #1f2937;
 }
 
-.table__head {
-  color: #374151;
-}
-
-.table tr {
-  border-bottom-width: 1px;
-  border: 1px solid #d1d5db;
-
-  :hover {
-    /* should be more bluish color */
-    background-color: #f3f4f6;
-  }
-}
-
-.table tr:hover td {
-  background-color: #f3f4f6;
-}
-
 .table th,
 .table td {
   padding: 0.5rem 1rem;
   white-space: nowrap;
+  background-color: #fff;
 }
 
 .table th {
@@ -101,18 +63,10 @@ const onCheckAll = () => {
   padding: 0.7rem 1rem;
 }
 
-.table td {
-  border-left: none;
-  border-right: none;
-}
-
 .table th:first-child,
-.table td:first-child,
-table__sticky {
+.table td:first-child {
   position: sticky;
-  left: 0;
-  /* background-color: #f8f9fa;  */
-  /* background-color: #f9fafb; */
+  left: -1px;
   z-index: 2;
   border-left: none;
   text-align: left;
@@ -128,8 +82,8 @@ table__sticky {
 }
 
 .table__checkbox {
-  background-color: rgb(243, 244, 246);
-  border-color: rgb(209, 213, 219);
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
   border-radius: 0.25rem;
   width: 1rem;
   height: 1rem;

@@ -9,8 +9,6 @@ function getEmployees() {
   const data = jsonData as EmpoyeeDataType;
 
   for (const employee of data.employees) {
-    employeeIds.push(employee.employeeId);
-
     const newItem: Employee = {
       employeeId: employee.employeeId,
       title: `${employee.firstName} ${employee.lastName} ...`,
@@ -25,6 +23,8 @@ function getEmployees() {
       expanded: true,
     };
     if (!employeesMap.has(employee.employeeId)) {
+      employeeIds.push(employee.employeeId);
+
       employeesMap.set(employee.employeeId, newItem);
     } else {
       const employeeParent = employeesMap.get(employee.employeeId);

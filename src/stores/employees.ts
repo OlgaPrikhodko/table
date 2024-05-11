@@ -4,35 +4,51 @@ import { getEmployees } from "@/lib/getEmployees";
 
 type EmployeeState = {
   ids: string[];
-  employees: Map<string, Employee>;
-  headerTitles: { name: string; title: string }[];
+  all: Map<string, Employee>;
 };
 
-export const useEmployees = defineStore("employees", {
+type HeaderTitle = { name: keyof Employee; title: string };
+
+export const headerTitles: HeaderTitle[] = [
+  { name: "title", title: "Full name / Health check" },
+  { name: "code", title: "Code" },
+  { name: "expiration", title: "Expiration" },
+  { name: "status", title: "Status" },
+  { name: "department", title: "Department" },
+  { name: "userStatus", title: "User status" },
+  { name: "jobTitle", title: "Job title" },
+];
+
+export const useEmployeesStore = defineStore("employeesStore", {
   state: (): EmployeeState => ({
     ids: [],
-    employees: new Map(),
-    headerTitles: [
-      { name: "title", title: "Full name / Health check" },
-      { name: "code", title: "Code" },
-      { name: "expiration", title: "Expiration" },
-      { name: "status", title: "Status" },
-      { name: "department", title: "Department" },
-      { name: "userStatus", title: "User status" },
-      { name: "jobTitle", title: "Job title" },
-    ],
+    all: new Map(),
   }),
   actions: {
     setEmployees() {
       const { employeeIds, employees } = getEmployees();
-      this.employees = employees;
+      this.all = employees;
       this.ids = employeeIds;
     },
     toggleGroup(id: string) {
-      const employee = this.employees.get(id);
+      const employee = this.all.get(id);
       if (!employee) return;
 
-      employee.expanded = !employee.expanded;
+      const updatedMap = new Map(this.all);
+      updatedMap.set(id, { ...employee, expanded: !employee.expanded });
+
+      this.all = updatedMap;
+    },
+  },
+  getters: {
+    employees: (state): Employee[] => {
+      return state.ids.map((id) => {
+        const employee = state.all.get(id);
+        if (!employee)
+          throw Error(`Employee with id ${id} was expected but not found`);
+
+        return employee;
+      });
     },
   },
 });
