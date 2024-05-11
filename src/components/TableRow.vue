@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import { reactive } from "vue";
 import type { Employee } from "@/lib/types";
 import { useEmployeesStore, headerTitles } from "@/stores/employees";
 
 import TableMenuButton from "@/components/TableMenuButton.vue";
 import GroupingIcon from "@/components/ExpandableIcon.vue";
 
-defineProps<{
+const props = defineProps<{
   rowItem: Employee;
   type: "parent" | "child";
 }>();
@@ -15,6 +16,15 @@ const employeesStore = useEmployeesStore();
 const toggleExpanded = (id: string) => {
   employeesStore.toggleGroup(id);
 };
+const statusClass = reactive({
+  "status--valid": props.rowItem.status === "valid",
+  "status--expired": props.rowItem.status === "expired",
+  "status--canceled": props.rowItem.status === "canceled",
+});
+
+const userStatusClass = reactive({
+  "status--valid": props.rowItem.userStatus === "active",
+});
 </script>
 
 <template>
@@ -37,7 +47,21 @@ const toggleExpanded = (id: string) => {
       <GroupingIcon v-if="type === 'parent'" :expanded="rowItem.expanded" />
     </td>
     <td v-for="{ name } in headerTitles" :key="name">
-      {{ rowItem[name] }}
+      <template v-if="type === 'parent' && name === 'title'">
+        {{ rowItem[name] }} ({{ rowItem.children.length }})
+      </template>
+      <span v-else-if="name === 'status'" class="status" :class="statusClass">{{
+        rowItem[name]
+      }}</span>
+      <span
+        v-else-if="name === 'userStatus'"
+        class="status"
+        :class="userStatusClass"
+        >{{ rowItem[name] }}</span
+      >
+      <template v-else>
+        {{ rowItem[name] }}
+      </template>
     </td>
     <td><TableMenuButton /></td>
   </tr>
@@ -53,6 +77,10 @@ const toggleExpanded = (id: string) => {
   background-color: #effaf5;
 }
 
+.table__row--expanded td:nth-child(3) {
+  font-weight: bold;
+}
+
 .table__row:hover td {
   background-color: #f3f4f6;
 }
@@ -61,5 +89,27 @@ const toggleExpanded = (id: string) => {
   padding: 0;
   padding-left: 1rem;
   padding-right: -0.2rem;
+}
+
+.status {
+  text-transform: capitalize;
+  border-radius: 0.6rem;
+  padding: 3px 10px;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.status--valid {
+  background-color: #29cd83;
+}
+
+.status--expired {
+  background-color: #ff8383;
+  color: #690000;
+}
+
+.status--canceled {
+  background-color: #dedfe5;
+  color: #65696e;
 }
 </style>

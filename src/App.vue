@@ -13,6 +13,7 @@ import TheTable from "@/components/TheTable.vue";
 <style>
 main {
   width: 100%;
+  background-color: #fcfcfc;
 }
 .wrapper {
   width: 100%;

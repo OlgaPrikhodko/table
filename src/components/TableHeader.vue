@@ -35,8 +35,4 @@ const onCheckAll = () => {
   </thead>
 </template>
 
-<style scoped>
-.table__head {
-  color: #374151;
-}
-</style>
+<style scoped></style>

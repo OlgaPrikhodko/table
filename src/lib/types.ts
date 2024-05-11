@@ -1,9 +1,11 @@
+type HealthCheckStatus = "valid" | "expired" | "canceled";
+
 export type Employee = {
   employeeId: string;
   title: string;
   code: string | null;
   expiration: string | null;
-  status: string | null;
+  status: HealthCheckStatus | null;
   department: string | null;
   userStatus: string | null;
   jobTitle: string | null;
@@ -46,6 +48,7 @@ export type EmployeeData = {
   cancelledHealthChecksCount: number;
   activeValidHealthChecksCount: number;
   activeExpiredHealthChecksCount: number;
+  healthCheckStatus: "valid" | "expired" | "canceled";
   healthCheckId: null | string;
   healthCheckTypeId: null | string;
   healthCheckCardId: null | string;

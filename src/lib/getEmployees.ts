@@ -11,16 +11,16 @@ function getEmployees() {
   for (const employee of data.employees) {
     const newItem: Employee = {
       employeeId: employee.employeeId,
-      title: `${employee.firstName} ${employee.lastName} ...`,
+      title: `${employee.firstName} ${employee.lastName} `,
       code: employee.typeCode,
       expiration: employee.validityExpirationDate,
-      status: employee.validityExpirationDate ? "Valid" : null,
+      status: employee.healthCheckStatus,
       department: employee.department,
-      userStatus: employee.isDisabled !== null ? "Active" : null,
+      userStatus: employee.isDisabled !== null ? "active" : null,
       jobTitle: employee.jobTitleName,
       healthCheckId: employee.healthCheckId,
       children: [],
-      expanded: true,
+      expanded: false,
     };
     if (!employeesMap.has(employee.employeeId)) {
       employeeIds.push(employee.employeeId);
