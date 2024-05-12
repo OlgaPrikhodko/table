@@ -70,7 +70,7 @@ const userStatusClass = reactive({
 <style scoped>
 .table__row {
   border-bottom-width: 1px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border);
 }
 
 .table__row--expanded td {
