@@ -5,6 +5,7 @@ import { useEmployeesStore } from "@/stores/employees";
 
 import TableRow from "@/components/TableRow.vue";
 import TableHeader from "@/components/TableHeader.vue";
+import PaginationControls from "@/components/PaginationControls.vue";
 
 import { usePaginationStore } from "@/stores/pagination";
 
@@ -46,17 +47,7 @@ const paginatedEmployees = computed(() =>
       </tbody>
     </table>
 
-    <!-- Pagination controls -->
-    <div class="pagination">
-      <button
-        v-for="page in paginationStore.totalPages"
-        :key="page"
-        @click="paginationStore.setPage(page)"
-        :class="{ active: page === paginationStore.currentPage }"
-      >
-        {{ page }}
-      </button>
-    </div>
+    <PaginationControls />
   </div>
 </template>
 
