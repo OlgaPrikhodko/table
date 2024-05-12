@@ -1,25 +1,23 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 import { useEmployeesStore } from "@/stores/employees";
-import { usePagination } from "@/composables/usePagination";
 
 import TableRow from "@/components/TableRow.vue";
 import TableHeader from "@/components/TableHeader.vue";
 
+import { usePaginationStore } from "@/stores/pagination";
+
 const employeesStore = useEmployeesStore();
 employeesStore.setEmployees();
 
-const { currentPage, totalPages, startIndex, paginate } = usePagination(
-  employeesStore.employees.length
-);
-
-const itemsPerPage = ref(3);
+const paginationStore = usePaginationStore();
+paginationStore.setTotalItems(employeesStore.employees.length);
 
 const paginatedEmployees = computed(() =>
   employeesStore.employees.slice(
-    startIndex.value,
-    startIndex.value + itemsPerPage.value
+    paginationStore.startIndex,
+    paginationStore.startIndex + paginationStore.itemsPerPage
   )
 );
 </script>
@@ -51,10 +49,10 @@ const paginatedEmployees = computed(() =>
     <!-- Pagination controls -->
     <div class="pagination">
       <button
-        v-for="page in totalPages"
+        v-for="page in paginationStore.totalPages"
         :key="page"
-        @click="paginate(page)"
-        :class="{ active: page === currentPage }"
+        @click="paginationStore.setPage(page)"
+        :class="{ active: page === paginationStore.currentPage }"
       >
         {{ page }}
       </button>
