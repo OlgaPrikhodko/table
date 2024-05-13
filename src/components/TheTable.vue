@@ -39,7 +39,7 @@ const paginatedEmployees = computed(() =>
             <TableRow
               v-for="child in employee.children"
               :rowItem="child"
-              :key="child.healthCheckId"
+              :key="child.healthCheckId + employee.title"
               type="child"
             />
           </template>
