@@ -114,10 +114,9 @@ const paginationStore = usePaginationStore();
   border: none;
   background-color: inherit;
   display: flex;
-
-  :hover {
-    color: #1f2937;
-  }
+}
+.pagination__nav-button:hover {
+  color: #1f2937;
 }
 .pagination__nav-button:disabled {
   color: #a4a7ab;

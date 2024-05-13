@@ -27,11 +27,12 @@
   color: #6b7280;
   border: none;
   background-color: inherit;
-
-  :hover {
-    color: #1f2937;
-  }
 }
+
+button:hover {
+  color: #1f2937;
+}
+
 .button__svg {
   width: 1.25rem;
   height: 1.25rem;
