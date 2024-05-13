@@ -38,6 +38,7 @@ const userStatusClass = reactive({
         class="table__checkbox"
         type="checkbox"
         :id="rowItem.healthCheckId || rowItem.employeeId"
+        :checked="rowItem.checked"
       />
     </td>
     <td

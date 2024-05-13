@@ -39,6 +39,33 @@ export const useEmployeesStore = defineStore("employeesStore", {
 
       this.all = updatedMap;
     },
+    setAllEmployeersChecked(checkedValue: boolean) {
+      const updatedMap = new Map(this.all);
+      for (const [id, employee] of updatedMap.entries()) {
+        const updatedEmployee = this.setEmployeeAndChildrenChecked(
+          employee,
+          checkedValue
+        );
+        updatedMap.set(id, updatedEmployee);
+      }
+      this.all = updatedMap;
+    },
+
+    setEmployeeAndChildrenChecked(
+      employee: Employee,
+      checked: boolean
+    ): Employee {
+      const updatedEmployee = { ...employee, checked };
+
+      // Recursively update children
+      if (updatedEmployee.children) {
+        updatedEmployee.children = updatedEmployee.children.map((child) =>
+          this.setEmployeeAndChildrenChecked(child, checked)
+        );
+      }
+
+      return updatedEmployee;
+    },
   },
   getters: {
     employees: (state): Employee[] => {

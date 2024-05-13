@@ -9,9 +9,10 @@ export type Employee = {
   department: string | null;
   userStatus: string | null;
   jobTitle: string | null;
-  expanded: boolean;
   healthCheckId: string | null;
   children: Employee[];
+  expanded: boolean;
+  checked: boolean;
 };
 
 export type EmployeeData = {

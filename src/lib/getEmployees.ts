@@ -21,6 +21,7 @@ function getEmployees() {
       healthCheckId: employee.healthCheckId,
       children: [],
       expanded: false,
+      checked: false,
     };
     if (!employeesMap.has(employee.employeeId)) {
       employeeIds.push(employee.employeeId);

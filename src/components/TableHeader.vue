@@ -1,14 +1,18 @@
 <script lang="ts" setup>
-import { headerTitles } from "@/stores/employees";
+import { headerTitles, useEmployeesStore } from "@/stores/employees";
 
 import TableRefreshButton from "@/components/TableRefreshButton.vue";
+import { ref } from "vue";
+
+const employeesStore = useEmployeesStore();
 
 const getColspan = (name: string) => {
   return name === "title" ? 2 : 1;
 };
 
-const onCheckAll = () => {
-  console.log("set all rows checked");
+const allChecked = ref(false);
+const onToggleCheckedAll = (val: boolean) => {
+  employeesStore.setAllEmployeersChecked(val);
 };
 </script>
 
@@ -20,7 +24,8 @@ const onCheckAll = () => {
           class="table__checkbox"
           type="checkbox"
           id="headerCheckbox"
-          @click="onCheckAll"
+          v-model="allChecked"
+          @click="onToggleCheckedAll(!allChecked)"
         />
       </th>
       <th
