@@ -1,8 +1,12 @@
 import { defineStore } from "pinia";
 
+export const PER_PAGE_OPTIONS = [3, 6, 9] as const;
+
+type ItemsPerPage = (typeof PER_PAGE_OPTIONS)[number];
+
 type PaginationState = {
   currentPage: number;
-  itemsPerPage: number;
+  itemsPerPage: ItemsPerPage;
   totalItems: number;
 };
 
@@ -24,7 +28,7 @@ export const usePaginationStore = defineStore("pagination", {
     setPage(page: number) {
       this.currentPage = page;
     },
-    setItemsPerPage(itemsPerPage: number) {
+    setItemsPerPage(itemsPerPage: ItemsPerPage) {
       this.itemsPerPage = itemsPerPage;
     },
     setTotalItems(totalItems: number) {

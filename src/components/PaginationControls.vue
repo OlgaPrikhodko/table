@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { usePaginationStore } from "@/stores/pagination";
+import { usePaginationStore, PER_PAGE_OPTIONS } from "@/stores/pagination";
 
 const paginationStore = usePaginationStore();
-const perPageOptions = [3, 6, 9];
 </script>
 
 <template>
@@ -32,11 +31,12 @@ const perPageOptions = [3, 6, 9];
       <span class="pagination__title">Show:</span>
       <button
         class="pagination__button"
-        v-for="option in perPageOptions"
+        v-for="option in PER_PAGE_OPTIONS"
         :key="option"
         :class="{
           'pagination__button--active': option === paginationStore.itemsPerPage,
         }"
+        @click="paginationStore.setItemsPerPage(option)"
       >
         {{ option }}
       </button>
