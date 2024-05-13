@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 
 import { defineConfig } from "vite";
 import legacy from "@vitejs/plugin-legacy";
@@ -18,4 +18,5 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  base: "/table",
 });
