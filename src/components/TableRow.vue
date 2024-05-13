@@ -100,7 +100,7 @@ const userStatusClass = reactive({
 }
 
 .status--valid {
-  background-color: #29cd83;
+  background-color: var(--color-active);
 }
 
 .status--expired {
