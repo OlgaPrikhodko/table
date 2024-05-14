@@ -61,7 +61,7 @@ const paginatedEmployees = computed(() =>
 }
 
 .table {
-  table-layout: auto;
+  table-layout: fixed;
   border-collapse: collapse;
   width: 100%;
   text-align: left;
