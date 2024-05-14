@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
+import { storeToRefs } from "pinia";
+
 import type { Employee } from "@/lib/types";
-import { useEmployeesStore, headerTitles } from "@/stores/employees";
+import { useEmployeesStore } from "@/stores/employees";
+import { useHeaderTitlesStore } from "@/stores/headerTitles";
 
 import TableMenuButton from "@/components/TableMenuButton.vue";
 import GroupingIcon from "@/components/ExpandableIcon.vue";
@@ -12,6 +15,8 @@ const props = defineProps<{
 }>();
 
 const employeesStore = useEmployeesStore();
+const headerTitlesStore = useHeaderTitlesStore();
+const { headerTitles } = storeToRefs(headerTitlesStore);
 
 const toggleExpanded = (id: string) => {
   employeesStore.toggleGroup(id);

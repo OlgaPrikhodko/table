@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import { headerTitles, useEmployeesStore } from "@/stores/employees";
+import { useEmployeesStore } from "@/stores/employees";
 import { useResizable } from "@/composables/useResizable";
 
 import TableRefreshButton from "@/components/TableRefreshButton.vue";
 import { Fragment } from "vue-frag";
+import { useHeaderTitlesStore } from "@/stores/headerTitles";
+import { storeToRefs } from "pinia";
+
+const headerTitlesStore = useHeaderTitlesStore();
+const { headerTitles } = storeToRefs(headerTitlesStore);
 
 const employeesStore = useEmployeesStore();
 const { startResize } = useResizable();

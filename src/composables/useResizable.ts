@@ -1,10 +1,10 @@
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useEmployeesStore } from "@/stores/employees";
+import { useHeaderTitlesStore } from "@/stores/headerTitles";
 
 export function useResizable() {
-  const employeeStore = useEmployeesStore();
-  const { headerTitles } = storeToRefs(employeeStore);
+  const headerTitlesStore = useHeaderTitlesStore();
+  const { headerTitles } = storeToRefs(headerTitlesStore);
 
   let startX = 0;
   let startWidth = 0;
@@ -18,7 +18,8 @@ export function useResizable() {
     const onMouseMove = (event: MouseEvent) => {
       if (resizing) {
         const deltaX = event.pageX - startX;
-        headerTitles.value[index].width = Math.max(startWidth + deltaX, 10); // Minimum width of 10px
+        const newWidth = Math.max(startWidth + deltaX, 10);
+        headerTitles.value[index].width = newWidth;
       }
     };
 
