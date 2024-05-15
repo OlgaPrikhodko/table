@@ -52,10 +52,14 @@ const userStatusClass = reactive({
     >
       <GroupingIcon v-if="type === 'parent'" :expanded="rowItem.expanded" />
     </td>
-    <td v-for="{ name } in headerTitles" :key="name">
-      <template v-if="type === 'parent' && name === 'title'">
+    <td
+      v-for="{ name } in headerTitles"
+      :key="name"
+      :class="{ 'table__cell-title': type === 'parent' && name === 'title' }"
+    >
+      <p v-if="type === 'parent' && name === 'title'">
         {{ rowItem[name] }} ({{ rowItem.children.length }})
-      </template>
+      </p>
       <span v-else-if="name === 'status'" class="status" :class="statusClass">{{
         rowItem[name]
       }}</span>
@@ -77,6 +81,7 @@ const userStatusClass = reactive({
 .table__row {
   border-bottom-width: 1px;
   border: 1px solid var(--color-border);
+  border-right: none;
 }
 
 .table__row--expanded td {
@@ -92,6 +97,12 @@ const userStatusClass = reactive({
 }
 
 .table__cell-expandable {
+  padding-right: 0;
+  padding-left: 0.7rem;
+}
+
+.table__cell-title {
+  padding-left: 0;
 }
 
 .status {

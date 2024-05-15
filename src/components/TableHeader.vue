@@ -9,7 +9,7 @@ import { useHeaderTitlesStore } from "@/stores/headerTitles";
 import { storeToRefs } from "pinia";
 
 const headerTitlesStore = useHeaderTitlesStore();
-const { headerTitles } = storeToRefs(headerTitlesStore);
+const { headerTitles, headerCols } = storeToRefs(headerTitlesStore);
 
 const employeesStore = useEmployeesStore();
 const { startResize } = useResizable();
@@ -27,18 +27,15 @@ const onToggleCheckedAll = (val: boolean) => {
 <template>
   <Fragment>
     <colgroup>
-      <col class="table-cell__fixed" />
-      <col class="table-cell__fixed" />
       <col
-        v-for="{ name, width } in headerTitles"
+        v-for="{ name, width } in headerCols"
         :key="name"
         :style="{ width: width + 'px' }"
       />
-      <col class="table-cell__fixed" />
     </colgroup>
     <thead class="table__head">
       <tr>
-        <th class="table-th table-cell__checkbox">
+        <th class="table-head__cell table-head__checkbox">
           <input
             class="table__checkbox"
             type="checkbox"
@@ -48,25 +45,38 @@ const onToggleCheckedAll = (val: boolean) => {
           />
         </th>
         <th
+          class="table-head__cell"
           v-for="({ name, title }, index) in headerTitles"
           :key="name"
           :colspan="getColspan(name)"
         >
-          <p>{{ title }}</p>
+          <p class="table-head__text">{{ title }}</p>
           <div
             class="table__resize-handle"
             @mousedown="startResize($event, index)"
           ></div>
         </th>
-        <th><TableRefreshButton /></th>
+        <th class="table-head__last-child">
+          <TableRefreshButton />
+        </th>
       </tr>
     </thead>
   </Fragment>
 </template>
 
 <style scoped>
-.table-cell__fixed {
-  width: 50px;
+.table__head {
+  border: 1px solid var(--color-border);
+  border-right: none;
+}
+
+.table-head__cell {
+  font-weight: bold;
+  padding: 0.7rem 1rem;
+}
+
+.table-head__text {
+  font-weight: bold;
 }
 
 .table__resize-handle {

@@ -8,12 +8,16 @@ import TableHeader from "@/components/TableHeader.vue";
 import PaginationControls from "@/components/PaginationControls.vue";
 
 import { usePaginationStore } from "@/stores/pagination";
+import { useHeaderTitlesStore } from "@/stores/headerTitles";
+import { storeToRefs } from "pinia";
 
 const employeesStore = useEmployeesStore();
 employeesStore.setEmployees();
 
 const paginationStore = usePaginationStore();
 paginationStore.setTotalItems(employeesStore.employees.length);
+
+const headerTitlesStore = useHeaderTitlesStore();
 
 const paginatedEmployees = computed(() =>
   employeesStore.employees.slice(
@@ -25,7 +29,10 @@ const paginatedEmployees = computed(() =>
 
 <template>
   <div class="table-container">
-    <table class="table">
+    <table
+      class="table"
+      :style="{ width: `${headerTitlesStore.tableWidth}px` }"
+    >
       <TableHeader />
 
       <tbody>
@@ -56,16 +63,15 @@ const paginatedEmployees = computed(() =>
   overflow-x: auto;
   max-width: 100%;
   position: relative;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .table {
   table-layout: fixed;
   border-collapse: collapse;
-  width: 100%;
   text-align: left;
   color: #1f2937;
+  box-shadow: 1px 4px 6px -1px rgba(0, 0, 0, 0.2),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .table th,
@@ -75,12 +81,7 @@ const paginatedEmployees = computed(() =>
   background-color: #fff;
 }
 
-.table th {
-  font-weight: bold;
-  padding: 0.7rem 1rem;
-}
-
-.table th:first-child,
+.table .table th:first-child,
 .table td:first-child {
   position: sticky;
   left: -1px;
