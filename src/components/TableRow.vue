@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
 import { storeToRefs } from "pinia";
 
 import type { Employee } from "@/lib/types";
@@ -7,9 +6,10 @@ import { useEmployeesStore } from "@/stores/employees";
 import { useHeaderTitlesStore } from "@/stores/headerTitles";
 
 import TableMenuButton from "@/components/TableMenuButton.vue";
+import TableCellStatus from "@/components/TableCellStatus.vue";
 import GroupingIcon from "@/icons/ExpandableIcon.vue";
 
-const props = defineProps<{
+defineProps<{
   rowItem: Employee;
   type: "parent" | "child";
 }>();
@@ -21,15 +21,6 @@ const { headerTitles } = storeToRefs(headerTitlesStore);
 const toggleExpanded = (id: string) => {
   employeesStore.toggleGroup(id);
 };
-const statusClass = reactive({
-  "status--valid": props.rowItem.status === "valid",
-  "status--expired": props.rowItem.status === "expired",
-  "status--canceled": props.rowItem.status === "canceled",
-});
-
-const userStatusClass = reactive({
-  "status--valid": props.rowItem.userStatus === "active",
-});
 </script>
 
 <template>
@@ -55,20 +46,15 @@ const userStatusClass = reactive({
     <td
       v-for="{ name } in headerTitles"
       :key="name"
-      :class="{ 'table__cell-title': type === 'parent' && name === 'title' }"
+      :class="{ 'table__cell-title': name === 'title' }"
     >
       <p v-if="type === 'parent' && name === 'title'">
         {{ rowItem[name] }} ({{ rowItem.children.length }})
       </p>
-      <span v-else-if="name === 'status'" class="status" :class="statusClass">{{
-        rowItem[name]
-      }}</span>
-      <span
-        v-else-if="name === 'userStatus'"
-        class="status"
-        :class="userStatusClass"
-        >{{ rowItem[name] }}</span
-      >
+      <template v-else-if="name === 'status' || name === 'userStatus'">
+        <TableCellStatus :statusType="name" :statusText="rowItem[name]" />
+      </template>
+
       <template v-else>
         {{ rowItem[name] }}
       </template>
@@ -103,27 +89,5 @@ const userStatusClass = reactive({
 
 .table__cell-title {
   padding-left: 0;
-}
-
-.status {
-  text-transform: capitalize;
-  border-radius: 0.6rem;
-  padding: 3px 10px;
-  font-weight: bold;
-  font-size: 0.75rem;
-}
-
-.status--valid {
-  background-color: var(--color-active);
-}
-
-.status--expired {
-  background-color: #ff8383;
-  color: #690000;
-}
-
-.status--canceled {
-  background-color: #dedfe5;
-  color: #65696e;
 }
 </style>
