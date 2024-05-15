@@ -48,7 +48,10 @@ const toggleExpanded = (id: string) => {
       :key="name"
       :class="{ 'table__cell-title': name === 'title' }"
     >
-      <p v-if="type === 'parent' && name === 'title'">
+      <p
+        v-if="type === 'parent' && name === 'title'"
+        :class="{ 'table__cell--expanded-title': rowItem.expanded }"
+      >
         {{ rowItem[name] }} ({{ rowItem.children.length }})
       </p>
       <template v-else-if="name === 'status' || name === 'userStatus'">
@@ -74,10 +77,6 @@ const toggleExpanded = (id: string) => {
   background-color: #effaf5;
 }
 
-.table__row--expanded td:nth-child(3) {
-  font-weight: bold;
-}
-
 .table__row:hover td {
   background-color: #f3f4f6;
 }
@@ -85,6 +84,10 @@ const toggleExpanded = (id: string) => {
 .table__cell-expandable {
   padding-right: 0;
   padding-left: 0.7rem;
+}
+
+.table__cell--expanded-title {
+  font-weight: bold;
 }
 
 .table__cell-title {
