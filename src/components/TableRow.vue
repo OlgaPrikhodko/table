@@ -7,7 +7,7 @@ import { useEmployeesStore } from "@/stores/employees";
 import { useHeaderTitlesStore } from "@/stores/headerTitles";
 
 import TableMenuButton from "@/components/TableMenuButton.vue";
-import GroupingIcon from "@/components/ExpandableIcon.vue";
+import GroupingIcon from "@/icons/ExpandableIcon.vue";
 
 const props = defineProps<{
   rowItem: Employee;
