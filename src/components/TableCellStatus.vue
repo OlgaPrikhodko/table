@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 type TableStatusCellProps = {
   statusType: "status" | "userStatus";
-  statusText: string | null;
+  statusText?: string | null;
 };
 
 const props = defineProps<TableStatusCellProps>();
