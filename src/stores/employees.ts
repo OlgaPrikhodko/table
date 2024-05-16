@@ -116,7 +116,9 @@ export const useEmployeesStore = defineStore("employeesStore", {
     getIndeterminatedState(state): boolean {
       return (
         !this.getCheckedState &&
-        this.employees.some((employee) => employee.checked)
+        this.employees.some(
+          (employee) => employee.checked || employee.indeterminate
+        )
       );
     },
   },
