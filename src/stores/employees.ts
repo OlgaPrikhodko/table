@@ -85,8 +85,7 @@ export const useEmployeesStore = defineStore("employeesStore", {
         const updatedChecked = updatedChildren.every((item) => item.checked);
 
         const updatedIndeterminated =
-          !updatedChecked &&
-          updatedChildren.some((item) => item.checked === true);
+          !updatedChecked && updatedChildren.some((item) => item.checked);
 
         const updatedEmployee = {
           ...employee,
@@ -99,8 +98,6 @@ export const useEmployeesStore = defineStore("employeesStore", {
       }
 
       this.all = updatedMap;
-
-      // TODO: update checked state for all on the page (checkbox in header)
     },
   },
   getters: {
@@ -114,7 +111,13 @@ export const useEmployeesStore = defineStore("employeesStore", {
       });
     },
     getCheckedState(state): boolean {
-      return this.employees.every((employee) => employee.checked === true);
+      return this.employees.every((employee) => employee.checked);
+    },
+    getIndeterminatedState(state): boolean {
+      return (
+        !this.getCheckedState &&
+        this.employees.some((employee) => employee.checked)
+      );
     },
   },
 });

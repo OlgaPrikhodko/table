@@ -41,6 +41,8 @@ const onToggleCheckedAll = (val: boolean) => {
             type="checkbox"
             id="headerCheckbox"
             v-model="allChecked"
+            :checked="employeesStore.getCheckedState"
+            :indeterminate.prop="employeesStore.getIndeterminatedState"
             @click="onToggleCheckedAll(!allChecked)"
           />
         </th>
