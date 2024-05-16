@@ -1,30 +1,16 @@
 <script setup lang="ts">
-import { computed } from "vue";
-
 import { useEmployeesStore } from "@/stores/employees";
 
 import TableRow from "@/components/TableRow.vue";
 import TableHeader from "@/components/TableHeader.vue";
 import PaginationControls from "@/components/PaginationControls.vue";
 
-import { usePaginationStore } from "@/stores/pagination";
 import { useHeaderTitlesStore } from "@/stores/headerTitles";
-import { storeToRefs } from "pinia";
 
 const employeesStore = useEmployeesStore();
 employeesStore.setEmployees();
 
-const paginationStore = usePaginationStore();
-paginationStore.setTotalItems(employeesStore.employees.length);
-
 const headerTitlesStore = useHeaderTitlesStore();
-
-const paginatedEmployees = computed(() =>
-  employeesStore.employees.slice(
-    paginationStore.startIndex,
-    paginationStore.startIndex + paginationStore.itemsPerPage
-  )
-);
 </script>
 
 <template>
@@ -36,7 +22,7 @@ const paginatedEmployees = computed(() =>
       <TableHeader />
 
       <tbody>
-        <template v-for="employee of paginatedEmployees">
+        <template v-for="employee of employeesStore.employees">
           <TableRow
             :rowItem="employee"
             :key="employee.employeeId"

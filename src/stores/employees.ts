@@ -1,6 +1,7 @@
 import type { Employee } from "@/lib/types";
 import { defineStore } from "pinia";
 import { getEmployees } from "@/lib/getEmployees";
+import { usePaginationStore } from "./pagination";
 
 type EmployeeState = {
   ids: string[];
@@ -43,7 +44,7 @@ export const useEmployeesStore = defineStore("employeesStore", {
       employee: Employee,
       checked: boolean
     ): Employee {
-      const updatedEmployee = { ...employee, checked };
+      const updatedEmployee = { ...employee, checked, indeterminated: false };
 
       // Recursively update children
       if (updatedEmployee.children) {
@@ -102,13 +103,23 @@ export const useEmployeesStore = defineStore("employeesStore", {
   },
   getters: {
     employees: (state): Employee[] => {
-      return state.ids.map((id) => {
+      const paginationStore = usePaginationStore();
+      paginationStore.setTotalItems(state.ids.length);
+
+      const slicedIds = state.ids.slice(
+        paginationStore.startIndex,
+        paginationStore.startIndex + paginationStore.itemsPerPage
+      );
+
+      const parents = slicedIds.map((id) => {
         const employee = state.all.get(id);
         if (!employee)
           throw Error(`Employee with id ${id} was expected but not found`);
 
         return employee;
       });
+
+      return parents;
     },
     getCheckedState(state): boolean {
       return this.employees.every((employee) => employee.checked);
