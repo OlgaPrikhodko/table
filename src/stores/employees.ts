@@ -54,6 +54,54 @@ export const useEmployeesStore = defineStore("employeesStore", {
 
       return updatedEmployee;
     },
+
+    setEmployeeItemChecked(
+      parentId: string,
+      childId: string | null,
+      checkedValue: boolean
+    ) {
+      const updatedMap = new Map(this.all);
+
+      const employee = this.all.get(parentId);
+      if (!employee)
+        throw Error(`Employee with id ${parentId} was expected but not found`);
+
+      // If childId is not provided, update the parent employee and all its children
+      if (!childId) {
+        const updatedEmployee = this.setEmployeeAndChildrenChecked(
+          employee,
+          checkedValue
+        );
+        updatedMap.set(parentId, updatedEmployee);
+      } else {
+        // update the specific child
+        const updatedChildren = employee.children.map((child) =>
+          child.healthCheckId === childId
+            ? { ...child, checked: checkedValue }
+            : child
+        );
+
+        // Determine the new checked and indeterminate state of the parent employee
+        const updatedChecked = updatedChildren.every((item) => item.checked);
+
+        const updatedIndeterminated =
+          !updatedChecked &&
+          updatedChildren.some((item) => item.checked === true);
+
+        const updatedEmployee = {
+          ...employee,
+          children: updatedChildren,
+          checked: updatedChecked,
+          indeterminate: updatedIndeterminated,
+        };
+
+        updatedMap.set(parentId, updatedEmployee);
+      }
+
+      this.all = updatedMap;
+
+      // TODO: update checked state for all on the page (checkbox in header)
+    },
   },
   getters: {
     employees: (state): Employee[] => {
@@ -64,6 +112,9 @@ export const useEmployeesStore = defineStore("employeesStore", {
 
         return employee;
       });
+    },
+    getCheckedState(state): boolean {
+      return this.employees.every((employee) => employee.checked === true);
     },
   },
 });

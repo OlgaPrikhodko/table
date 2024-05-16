@@ -21,6 +21,15 @@ const { headerTitles } = storeToRefs(headerTitlesStore);
 const toggleExpanded = (id: string) => {
   employeesStore.toggleGroup(id);
 };
+
+const toggleCheckedItem = (
+  parentId: string,
+  childId: string | null,
+  value: boolean
+) => {
+  const checkedValue = !value;
+  employeesStore.setEmployeeItemChecked(parentId, childId, checkedValue);
+};
 </script>
 
 <template>
@@ -35,6 +44,14 @@ const toggleExpanded = (id: string) => {
         type="checkbox"
         :id="rowItem.healthCheckId || rowItem.employeeId"
         :checked="rowItem.checked"
+        :indeterminate.prop="type === 'parent' ? rowItem.indeterminate : false"
+        @click="
+          toggleCheckedItem(
+            rowItem.employeeId,
+            rowItem.healthCheckId,
+            rowItem.checked
+          )
+        "
       />
     </td>
     <td

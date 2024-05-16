@@ -22,6 +22,7 @@ function getEmployees() {
       children: [],
       expanded: false,
       checked: false,
+      indeterminate: false,
     };
     if (!employeesMap.has(employee.employeeId)) {
       employeeIds.push(employee.employeeId);

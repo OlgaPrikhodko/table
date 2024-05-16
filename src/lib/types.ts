@@ -13,6 +13,7 @@ export type Employee = {
   children: Employee[];
   expanded: boolean;
   checked: boolean;
+  indeterminate: boolean;
 };
 
 export type EmployeeData = {
