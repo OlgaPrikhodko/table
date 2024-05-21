@@ -7,6 +7,7 @@ import { useHeaderTitlesStore } from "@/stores/headerTitles";
 
 import TableMenuButton from "@/components/TableMenuButton.vue";
 import TableCellStatus from "@/components/TableCellStatus.vue";
+import TheCheckbox from "@/components/TheCheckbox.vue";
 import GroupingIcon from "@/icons/ExpandableIcon.vue";
 
 defineProps<{
@@ -39,13 +40,12 @@ const toggleCheckedItem = (
     :key="rowItem.healthCheckId || rowItem.employeeId"
   >
     <td>
-      <input
-        class="table__checkbox"
-        type="checkbox"
+      <TheCheckbox
         :id="rowItem.healthCheckId || rowItem.employeeId"
+        name="rowCheckbox"
         :checked="rowItem.checked"
-        :indeterminate.prop="type === 'parent' ? rowItem.indeterminate : false"
-        @click="
+        :indeterminated="type === 'parent' ? rowItem.indeterminate : false"
+        @onChange="
           toggleCheckedItem(
             rowItem.employeeId,
             rowItem.healthCheckId,

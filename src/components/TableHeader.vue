@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ref } from "vue";
 import { useEmployeesStore } from "@/stores/employees";
 import { useResizable } from "@/composables/useResizable";
+import { Fragment } from "vue-frag";
 
 import TableRefreshButton from "@/components/TableRefreshButton.vue";
-import { Fragment } from "vue-frag";
+import TheCheckbox from "@/components/TheCheckbox.vue";
+
 import { useHeaderTitlesStore } from "@/stores/headerTitles";
 import { storeToRefs } from "pinia";
 
@@ -18,9 +19,9 @@ const getColspan = (name: string) => {
   return name === "title" ? 2 : 1;
 };
 
-const allChecked = ref(false);
-const onToggleCheckedAll = (val: boolean) => {
-  employeesStore.setAllEmployeersChecked(val);
+const onToggleCheckedAll = (id: string) => {
+  const newCheckedState = !employeesStore.getCheckedState;
+  employeesStore.setAllEmployeersChecked(newCheckedState);
 };
 </script>
 
@@ -35,15 +36,13 @@ const onToggleCheckedAll = (val: boolean) => {
     </colgroup>
     <thead class="table__head">
       <tr>
-        <th class="table-head__cell table-head__checkbox">
-          <input
-            class="table__checkbox"
-            type="checkbox"
+        <th class="table-head__cell">
+          <TheCheckbox
             id="headerCheckbox"
-            v-model="allChecked"
+            name="headerCheckbox"
             :checked="employeesStore.getCheckedState"
-            :indeterminate.prop="employeesStore.getIndeterminatedState"
-            @click="onToggleCheckedAll(!allChecked)"
+            :indeterminated="employeesStore.getIndeterminatedState"
+            @onChange="onToggleCheckedAll"
           />
         </th>
         <th
